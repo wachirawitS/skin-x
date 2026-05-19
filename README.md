@@ -17,8 +17,6 @@ A fullstack post management application built with Next.js, NestJS, PostgreSQL, 
 ```
 skin-x/
 ├── docker-compose.yml
-├── assignment/
-│   └── posts.json            # Source data (mounted into backend)
 ├── backend/                  # NestJS — feature-based
 │   └── src/features/
 │       ├── auth/             # Login, JWT, Passport strategies
