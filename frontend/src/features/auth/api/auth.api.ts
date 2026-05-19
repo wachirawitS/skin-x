@@ -1,0 +1,7 @@
+import apiClient from '@/shared/lib/api-client';
+import { LoginRequest, LoginResponse } from '../types/auth.types';
+
+export const authApi = {
+  login: (data: LoginRequest) =>
+    apiClient.post<LoginResponse>('/auth/login', data).then((r) => r.data),
+};

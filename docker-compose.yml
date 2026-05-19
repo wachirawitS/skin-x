@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: skinx-postgres
+    environment:
+      POSTGRES_DB: skinx_db
+      POSTGRES_USER: skinx_user
+      POSTGRES_PASSWORD: skinx_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U skinx_user -d skinx_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: skinx-backend
+    ports:
+      - "3001:3001"
+    environment:
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_NAME: skinx_db
+      DATABASE_USER: skinx_user
+      DATABASE_PASSWORD: skinx_password
+      JWT_SECRET: skinx-super-secret-jwt-key-2024
+      PORT: 3001
+      NODE_ENV: production
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./assignment/posts.json:/app/posts.json:ro
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:3001
+    container_name: skinx-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:

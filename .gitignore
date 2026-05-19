@@ -1,0 +1,32 @@
+# Assignment files
+assignment/
+
+# Claude
+.claude/
+
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Next.js
+frontend/.next/
+frontend/out/
+
+# NestJS build
+backend/dist/
+
+# Environment
+.env
+.env.local
+.env*.local
+
+# Docker volumes
+postgres_data/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
